@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\InfoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'] );
+
+Route::get('/admin', [Admin\IndexController::class, 'index'] );
 
 Route::get('/hello/{name}', static function(string $name): string{
     return  "Hello, {$name}";
@@ -25,14 +28,11 @@ Route::get('/user/{name}', static function(string $name): string{
     return  "Приветствую, {$name}";
 });
 
-Route::get('/info', static function(): string{
-    return  "О проекте";
-});
+Route::get('/info', [InfoController::class, 'index']);
 
-Route::get('/news', static function(): string{
-    return  "Список новостей";
-});
+Route::get('/news', [NewsController::class, 'news'])
+->name('news');
 
-Route::get('/news/{id}', static function(int $id): string{
-    return  "Новость {$id}";
-});
+Route::get('/news/{category}/{id}', [NewsController::class, 'newsOne'])
+->where('id', '\d+')
+->name('newsOne');
