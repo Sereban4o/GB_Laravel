@@ -1,19 +1,18 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class IndexController extends Controller
 {
-    public function index()
+    /**
+     * Handle the incoming request.
+     */
+    public function __invoke(Request $request):View
     {
-        return <<<php
-        <h1>Точка входа для админа</h1>
-        Тут какой-то текст<br>
-        <a href="/">Переход на главную страницу</a>
-php;
+        return \view('admin.index');
     }
 }
-

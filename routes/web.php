@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\IndexController as AdminController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Admin;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\InfoController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,21 +20,19 @@ use App\Http\Controllers\InfoController;
 
 Route::get('/', [HomeController::class, 'index'] );
 
-Route::get('/admin', [Admin\IndexController::class, 'index'] );
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news.index');
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');
 
-Route::get('/hello/{name}', static function(string $name): string{
-    return  "Hello, {$name}";
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::get('/', AdminController::class)->name('index');
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('news', AdminNewsController::class);
 });
 
-Route::get('/user/{name}', static function(string $name): string{
-    return  "Приветствую, {$name}";
-});
 
-Route::get('/info', [InfoController::class, 'index']);
 
-Route::get('/news', [NewsController::class, 'news'])
-->name('news');
 
-Route::get('/news/{category}/{id}', [NewsController::class, 'newsOne'])
-->where('id', '\d+')
-->name('newsOne');
+
