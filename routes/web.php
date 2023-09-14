@@ -20,11 +20,13 @@ use App\Http\Controllers\NewsController;
 
 Route::get('/', [HomeController::class, 'index'] );
 
-Route::get('/news', [NewsController::class, 'index'])
-    ->name('news.index');
-Route::get('/news/{id}', [NewsController::class, 'show'])
-    ->where('id', '\d+')
-    ->name('news.show');
+Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
+    Route::get('/', [NewsController::class, 'index'])
+        ->name('index');
+    Route::get('/{id}/show', [NewsController::class, 'show'])
+        ->where('id', '\d+')
+        ->name('show');
+});
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::get('/', AdminController::class)->name('index');

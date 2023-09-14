@@ -1,28 +1,25 @@
 <?php
-declare(strict_types=1);
-namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
-class NewsController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index()
     {
-        $news = $this->getNews();
-        return \view('admin.news.index', ['newsList' => $news]);
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create()
     {
-        return \view('admin.news.create');
+        //
     }
 
     /**
@@ -30,8 +27,7 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
-        return redirect()->route('admin.news.create');
+        //
     }
 
     /**
