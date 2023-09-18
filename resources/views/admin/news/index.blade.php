@@ -17,6 +17,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Заголовок</th>
                 <th scope="col">Автор</th>
+                <th scope="col">Категория</th>
                 <th scope="col">Статус</th>
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Действия</th>
@@ -25,11 +26,12 @@
             <tbody>
             @forelse($newsList as $news)
             <tr>
-                <td>{{$news['id']}}</td>
-                <td>{{$news['title']}}</td>
-                <td>{{$news['author']}}</td>
-                <td>{{$news['status']}}</td>
-                <td>{{$news['created_at']}}</td>
+                <td>{{$news->id}}</td>
+                <td>{{$news->title}}</td>
+                <td>{{$news->author}}</td>
+                <td>{{$news->category_title}}</td>
+                <td>{{$news->status}}</td>
+                <td>{{$news->created_at}}</td>
                 <td><a href="">Ред.</a> |  <a href="">Уд.</a></td>
             </tr>
             @empty

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -12,7 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        $categories = DB::table('categories')->get();
+        return view('admin.categories.index')->with(['categoriesList' => $categories]);
     }
 
     /**
@@ -28,7 +30,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
+
+        DB::table('categories')->insert(
+            ['title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'slug' => $request->input('slug'),
+                'created_at' => now()
+            ]
+        );
         return redirect()->route('admin.categories.create');
     }
 

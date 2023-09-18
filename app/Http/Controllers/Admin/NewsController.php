@@ -1,9 +1,13 @@
 <?php
 declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\News\Status;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class NewsController extends Controller
@@ -13,7 +17,11 @@ class NewsController extends Controller
      */
     public function index(): View
     {
-        $news = $this->getNews();
+        $news = DB::table('news')
+            ->join('categories', 'news.category_id', '=', 'categories.id')
+            ->select('news.*', 'categories.title as category_title')->get();
+
+
         return \view('admin.news.index', ['newsList' => $news]);
     }
 
@@ -22,7 +30,8 @@ class NewsController extends Controller
      */
     public function create(): View
     {
-        return \view('admin.news.create');
+        $categories = DB::table('categories')->get();
+        return \view('admin.news.create')->with(['categoriesList' => $categories]);
     }
 
     /**
@@ -30,7 +39,16 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->flash();
+    
+        DB::table('news')->insert(
+            ['title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'category_id' => $request->input('category'),
+                'author' => $request->input('author'),
+                'status' => Status::getStatus($request->input('status')),
+                'created_at' => now()
+            ]
+        );
         return redirect()->route('admin.news.create');
     }
 

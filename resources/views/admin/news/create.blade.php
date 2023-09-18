@@ -10,8 +10,19 @@
 
         </div>
     </div>
-    <form>
+    <form method="post" action="{{ route('admin.news.store') }}">
         @csrf
+        <div class="mb-3">
+            <label for="category" class="form-label">Категория</label>
+            <select name="category" id="category" class="form-select">
+                <option>Выберите категорию</option>
+                @forelse($categoriesList as $categories)
+                <option name="{{$categories->id}}" value="{{$categories->id}}">{{$categories->title}}</option>
+                @empty
+                    <option>Нет категорий</option>
+                @endforelse
+            </select>
+        </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Заголовок</label>
             <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
@@ -31,6 +42,10 @@
                 <option @if(old('status') === 'active') selected @endif>active</option>
                 <option @if(old('status') === 'blocked') selected @endif>blocked</option>
             </select>
+        </div>
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" name="image" id="image" >
+            <label class="input-group-text" for="inputGroupFile02">Загрузить файл</label>
         </div>
         <button type="submit" class="btn btn-success">Сохранить</button>
     </form>

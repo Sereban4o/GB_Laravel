@@ -17,15 +17,15 @@
                 @foreach($newsList as $news)
                     <div class="col">
                         <div class="card shadow-sm">
-                            <img src="{{$news['image']}}">
+                            <img src="{{$news->image}}">
                             <div class="card-body">
-                                <p><strong>{{$news['title']}}</strong></p>
-                                <p class="card-text">{{$news['description']}}</p>
+                                <p><strong>{{$news->title}}</strong></p>
+                                <p class="card-text">{{$news->description}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{{route('news.show', ['id' => $news['id']])}}" class="btn btn-sm btn-outline-secondary">Show</a>
+                                        <a href="{{route('news.show', ['id' => $news->id])}}" class="btn btn-sm btn-outline-secondary">Show</a>
                                     </div>
-                                    <small class="text-body-secondary">{{$news['author']}} ({{ $news['created_at'] }})</small>
+                                    <small class="text-body-secondary">{{$news->author}} ({{ $news->created_at }})</small>
                                 </div>
                             </div>
                         </div>

@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 final class NewsController extends Controller
 {
     public function index(): View
     {
-
-        return \view('news.index', [
-            'newsList' => $this->getNews(),
-        ]);
+        $news = DB::table('news')->get();
+       return \view('news.index')->with(['newsList'=> $news]);
     }
 
     public function show(int $id): View
     {
-        return view('news.show', [
-            'news' => $this->getNews($id),
-        ]);
+        $news = DB::table('news')->find($id);
+        return \view('news.show')->with(['news'=> $news]);
     }
 }

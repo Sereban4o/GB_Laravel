@@ -10,11 +10,19 @@
 
         </div>
     </div>
-    <form>
+    <form method="post" action="{{ route('admin.categories.store') }}">
         @csrf
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Название</label>
             <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Описание</label>
+            <input type="text" class="form-control" name="description" id="description" value="{{ old('description') }}">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Псевдоним</label>
+            <input type="text" class="form-control" name="slug" id="slug" value="{{ old('slug') }}">
         </div>
         <button type="submit" class="btn btn-success">Сохранить</button>
     </form>
