@@ -206,5 +206,7 @@
 </div>
 <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 
-<script src="{{asset('assets/js/chart.umd.min.js')}}" ></script><script src="{{asset('assets/js/dashboard.js')}}"></script></body>
+<script src="{{asset('assets/js/chart.umd.min.js')}}" ></script><script src="{{asset('assets/js/dashboard.js')}}"></script>
+@stack('js')
+</body>
 </html>

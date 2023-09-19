@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\News\Status;
+use App\Models\News;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,8 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('news')->insert($this->getData());
+        $news = new News($this->getData());
+        $news->save();
     }
 
     private function getData(): array

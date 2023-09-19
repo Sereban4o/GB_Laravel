@@ -18,13 +18,12 @@ use App\Http\Controllers\NewsController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'] );
+Route::get('/', HomeController::class )->name('home');
 
 Route::group(['prefix' => 'news', 'as' => 'news.'], function () {
     Route::get('/', [NewsController::class, 'index'])
         ->name('index');
-    Route::get('/{id}/show', [NewsController::class, 'show'])
-        ->where('id', '\d+')
+    Route::get('/{news}/show', [NewsController::class, 'show'])
         ->name('show');
 });
 

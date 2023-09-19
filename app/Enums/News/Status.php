@@ -17,15 +17,4 @@ public static function  getEnums(): array
     ];
 }
 
-public static function getStatus($status)
-{
-    switch ($status) {
-        case 'draft':
-            return self::DRAFT->value;
-        case 'active':
-            return self::ACTIVE->value;
-        case 'blocked':
-            return self::BLOCKED->value;
-    }
-}
 }

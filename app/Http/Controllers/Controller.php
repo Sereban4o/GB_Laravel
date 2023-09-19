@@ -12,34 +12,4 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
-    public function getNews(int $id = null): array
-    {
-        if ($id !== null) {
-            return [
-                'id' => $id,
-                'title' => fake()->jobTitle(),
-                'author' => fake()->userName(),
-                'image'  => fake()->imageUrl(200, 150),
-                'status' => 'ACTIVE',
-                'description' => fake()->text(100),
-                'created_at' => now()->format('d-m-Y H:i'),
-            ];
-        }
-
-        $quantityNews = 9;
-        $news = [];
-        for ($i=1; $i <= $quantityNews; $i++) {
-            $news[] = [
-                'id' => $i,
-                'title' => fake()->jobTitle(),
-                'author' => fake()->userName(),
-                'image'  => fake()->imageUrl(200, 150),
-                'status' => 'ACTIVE',
-                'description' => fake()->text(100) ,
-                'created_at' => now()->format('d-m-Y H:i'),
-            ];
-        }
-
-        return $news;
-    }
 }
