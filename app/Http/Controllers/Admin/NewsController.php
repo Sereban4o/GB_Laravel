@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\News\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -17,12 +17,14 @@ class NewsController extends Controller
      */
     public function index(): View
     {
-        $news = DB::table('news')
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.title as category_title')->get();
 
-
-        return \view('admin.news.index', ['newsList' => $news]);
+        return view('admin.news.index', [
+            'newsList' => News::query()
+                ->status()
+                ->with('category')
+                ->orderByDesc('id')
+                ->paginate(10)->withQueryString(),
+        ]);
     }
 
     /**
@@ -30,8 +32,9 @@ class NewsController extends Controller
      */
     public function create(): View
     {
-        $categories = DB::table('categories')->get();
-        return \view('admin.news.create')->with(['categoriesList' => $categories]);
+        $categories = Category::all();
+        return \view('admin.news.create')
+            ->with(['categories' => $categories]);
     }
 
     /**
@@ -39,17 +42,23 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-    
-        DB::table('news')->insert(
-            ['title' => $request->input('title'),
-                'description' => $request->input('description'),
-                'category_id' => $request->input('category'),
-                'author' => $request->input('author'),
-                'status' => Status::getStatus($request->input('status')),
-                'created_at' => now()
-            ]
-        );
-        return redirect()->route('admin.news.create');
+
+       $url = null;
+        if ($request->file('image')) {
+            $path = Storage::putFile('public/img', $request->file('image'));
+            $url = Storage::url($path);
+        }
+
+
+        $data = $request->only(['category_id', 'title', 'author', 'status', 'description']);
+
+        $news = new News($data);
+        $news->image = $url;
+        if ($news->save()) {
+            return redirect()->route('admin.news.index')->with('success', 'Запись успешно сохранена');
+        }
+
+        return back()->with('error', 'Не удалось добавить запись');
     }
 
     /**
@@ -63,17 +72,36 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(News $news): View
     {
-        //
+        $categories = Category::all();
+        return view('admin.news.edite', [
+            'categories' => $categories,
+            'news' => $news,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, News $news)
     {
-        //
+
+        $url = null;
+        if ($request->file('image')) {
+            $path = Storage::putFile('public/img', $request->file('image'));
+            $url = Storage::url($path);
+        }
+
+        $data = $request->only(['category_id', 'title', 'author', 'status', 'description']);
+
+        $news->fill($data);
+        $news->image = $url;
+        if ($news->save()) {
+            return redirect()->route('admin.news.index')->with('success', 'Запись успешно изменена');
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
     }
 
     /**

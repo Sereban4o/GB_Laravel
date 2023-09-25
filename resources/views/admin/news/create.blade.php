@@ -10,17 +10,19 @@
 
         </div>
     </div>
-    <form method="post" action="{{ route('admin.news.store') }}">
+    @include('inc.message')
+    <form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="category" class="form-label">Категория</label>
-            <select name="category" id="category" class="form-select">
+            <select name="category_id" id="category_id" class="form-select">
                 <option>Выберите категорию</option>
-                @forelse($categoriesList as $categories)
-                <option name="{{$categories->id}}" value="{{$categories->id}}">{{$categories->title}}</option>
-                @empty
-                    <option>Нет категорий</option>
-                @endforelse
+                @foreach($categories as $category)
+                    <option
+                        value="{{ $category->id }}"
+                        @selected(old('category_id') == $category->id)>{{ $category->title }}
+                    </option>
+                @endforeach
             </select>
         </div>
         <div class="mb-3">

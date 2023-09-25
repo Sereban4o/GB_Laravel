@@ -23,7 +23,7 @@
                                 <p class="card-text">{{$news->description}}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="btn-group">
-                                        <a href="{{route('news.show', ['id' => $news->id])}}" class="btn btn-sm btn-outline-secondary">Show</a>
+                                        <a href="{{route('news.show', $news)}}" class="btn btn-sm btn-outline-secondary">Show</a>
                                     </div>
                                     <small class="text-body-secondary">{{$news->author}} ({{ $news->created_at }})</small>
                                 </div>
@@ -31,7 +31,11 @@
                         </div>
                     </div>
                 @endforeach
+                    {{$newsList->links()}}
             </div>
+
         </div>
+
     </div>
+
 @endsection

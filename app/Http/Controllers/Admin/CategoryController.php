@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = DB::table('categories')->get();
+        $categories = Category::all();
         return view('admin.categories.index')->with(['categoriesList' => $categories]);
     }
 
@@ -31,14 +32,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
 
-        DB::table('categories')->insert(
-            ['title' => $request->input('title'),
-                'description' => $request->input('description'),
-                'slug' => $request->input('slug'),
-                'created_at' => now()
-            ]
-        );
-        return redirect()->route('admin.categories.create');
+        $data = $request->only(['title', 'slug', 'description']);
+
+        $category = new Category($data);
+
+        if ($category->save()) {
+            return redirect()->route('admin.categories.index')->with('success', 'Категория успешно сохранена');
+        }
+
+        return back()->with('error', 'Не удалось добавить категорию');
+
     }
 
     /**

@@ -11,6 +11,13 @@
     </div>
 
     <div class="table-responsive small">
+        @include('inc.message')
+        <select id="filter">
+            <option>selected</option>
+            <option>{{ \App\Enums\News\Status::DRAFT->value }}</option>
+            <option>{{ \App\Enums\News\Status::ACTIVE->value }}</option>
+            <option>{{ \App\Enums\News\Status::BLOCKED->value }}</option>
+        </select>
         <table class="table table-striped table-sm">
             <thead>
             <tr>
@@ -24,15 +31,16 @@
             </tr>
             </thead>
             <tbody>
+
             @forelse($newsList as $news)
             <tr>
                 <td>{{$news->id}}</td>
                 <td>{{$news->title}}</td>
                 <td>{{$news->author}}</td>
-                <td>{{$news->category_title}}</td>
+                <td>{{$news->category->title}}</td>
                 <td>{{$news->status}}</td>
                 <td>{{$news->created_at}}</td>
-                <td><a href="">Ред.</a> |  <a href="">Уд.</a></td>
+                <td><a href="{{ route('admin.news.edit', $news) }}">Ред.</a> |  <a href="">Уд.</a></td>
             </tr>
             @empty
                 <tr>
@@ -41,5 +49,31 @@
             @endforelse
             </tbody>
         </table>
+        {{$newsList->links()}}
     </div>
 @endsection
+@push('js')
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let filter = document.getElementById("filter");
+            filter.addEventListener("change", function (event) {
+
+                location.href = "?f=" + this.value;
+            });
+
+            const locationHref = location.href;
+            const indexF = locationHref.indexOf('?f=');
+            if (locationHref.indexOf('active') >=0){
+                  filter.value = 'active';
+            }else if(locationHref.indexOf('draft') >=0){
+                filter.value = 'draft';
+            }else if(locationHref.indexOf('blocked') >=0){
+                filter.value = 'blocked';
+            }else{
+                filter.value = 'selected';
+            }
+        });
+
+    </script>
+@endpush
