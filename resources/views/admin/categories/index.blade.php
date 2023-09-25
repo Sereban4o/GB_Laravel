@@ -9,6 +9,12 @@
 
         </div>
     </div>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            <x-alert :message="$error" type="danger"></x-alert>
+        @endforeach
+    @endif
+    @include('inc.message')
     <div class="table-responsive small">
         <table class="table table-striped table-sm">
             <thead>
