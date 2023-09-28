@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Admin\News;
+namespace App\Http\Requests\Admin\Categories;
 
 use App\Enums\News\Status;
-use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Enum;
 
-class Edit extends FormRequest
+
+class CreateCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +23,9 @@ class Edit extends FormRequest
      */
     public function rules(): array
     {
-        $tableNameCategory = (new Category())->getTable();
-
         return [
             'title' => ['required', 'string', 'min:3', 'max:150'],
-            'category_id'=> ['required', 'integer', "exists:{$tableNameCategory},id"],
-            'author' =>  ['required', 'string', 'min:2', 'max:100'],
-            'image' => ['nullable', 'image'],
-            'status' =>['required', new Enum(Status::class)],
+            'slug' =>  ['required', 'string', 'min:2', 'max:100'],
             'description' => ['nullable', 'string'],
         ];
     }
@@ -41,11 +35,7 @@ class Edit extends FormRequest
         return [
             'title' => 'наименование',
             'description' => 'описание',
-            'author' => 'автор',
-            'image' => 'картинка',
-            'status' => 'статус',
-            'category_id' => 'категория',
+            'slug' => 'псевдоним',
         ];
     }
-
 }

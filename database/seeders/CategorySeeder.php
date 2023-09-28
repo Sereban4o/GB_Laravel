@@ -14,22 +14,30 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $category = new Category($this->getData());
-        $category->save();
+        DB::table('categories')->insert($this->getData());
     }
 
-    private function getData(): array
+    public function getData(): array
     {
-        $quantity = 10;
-        $categories = [];
-        for ($i=0; $i <$quantity; $i++){
-            $categories[]=[
-                'title'=> fake()->jobTitle(),
-                'description'=>fake()->text(100),
-                'slug'=>fake()->slug,
-                'created_at'=>now(),
-            ];
-        }
-        return $categories;
+        return [
+            [
+                'title' => 'Спорт',
+                'description' => 'Новости спорта',
+                'slug'=>'sport',
+                'created_at' => now(),
+            ],
+            [
+                'title' => 'Политика',
+                'description' => 'Новости политики',
+                'slug'=>'politic',
+                'created_at' => now(),
+            ],            [
+                'title' => 'Развлечения',
+                'description' => 'Новости развлечения',
+                'slug'=>'game',
+                'created_at' => now(),
+            ],
+
+        ];
     }
 }
