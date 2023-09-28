@@ -10,6 +10,12 @@
 
         </div>
     </div>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            <x-alert :message="$error" type="danger"></x-alert>
+        @endforeach
+    @endif
+    @include('inc.message')
     <form method="post" action="{{ route('admin.categories.store') }}">
         @csrf
         <div class="mb-3">

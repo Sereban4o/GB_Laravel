@@ -10,6 +10,11 @@
 
         </div>
     </div>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            <x-alert :message="$error" type="danger"></x-alert>
+        @endforeach
+    @endif
     @include('inc.message')
     <form method="post" action="{{ route('admin.news.store') }}" enctype="multipart/form-data">
         @csrf
@@ -27,8 +32,9 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Заголовок</label>
-            <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
-        </div>
+            <input type="text" class="form-control"
+                   name="title" id="title" value="{{ old('title') }}">
+              </div>
         <div class="mb-3">
             <label for="description">Описание</label>
             <textarea class="form-control" name="description" id="description">{{ old('description') }}</textarea>
@@ -40,13 +46,13 @@
         <div class="mb-3">
             <label for="status">Статус</label>
             <select class="form-control" name="status" id="status">
-                <option @if(old('status') === 'draft') selected @endif>draft</option>
-                <option @if(old('status') === 'active') selected @endif>active</option>
-                <option @if(old('status') === 'blocked') selected @endif>blocked</option>
+                <option @selected(old('status') === 'draft')>draft</option>
+                <option @selected(old('status') === 'active')>active</option>
+                <option @selected(old('status') === 'blocked')>blocked</option>
             </select>
         </div>
         <div class="input-group mb-3">
-            <input type="file" class="form-control" name="image" id="image" >
+            <input type="file" class="form-control" name="image" id="image">
             <label class="input-group-text" for="inputGroupFile02">Загрузить файл</label>
         </div>
         <button type="submit" class="btn btn-success">Сохранить</button>

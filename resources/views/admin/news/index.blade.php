@@ -11,6 +11,11 @@
     </div>
 
     <div class="table-responsive small">
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                <x-alert :message="$error" type="danger"></x-alert>
+            @endforeach
+        @endif
         @include('inc.message')
         <select id="filter">
             <option>selected</option>
@@ -33,14 +38,14 @@
             <tbody>
 
             @forelse($newsList as $news)
-            <tr>
+            <tr id="{{$news->id}}">
                 <td>{{$news->id}}</td>
                 <td>{{$news->title}}</td>
                 <td>{{$news->author}}</td>
                 <td>{{$news->category->title}}</td>
                 <td>{{$news->status}}</td>
                 <td>{{$news->created_at}}</td>
-                <td><a href="{{ route('admin.news.edit', $news) }}">Ред.</a> |  <a href="">Уд.</a></td>
+                <td><a href="{{ route('admin.news.edit', $news) }}">Ред.</a> | <a rel="{{$news->id}}" class="delete" href="javascript:">Уд.</a></td>
             </tr>
             @empty
                 <tr>
@@ -74,6 +79,32 @@
                 filter.value = 'selected';
             }
         });
+
+
+        let elements = document.querySelectorAll(".delete");
+        elements.forEach(function (element, key){
+            element.addEventListener('click', function (){
+                const id = this.getAttribute('rel');
+                if (confirm(`Подтверждаете удаление записи с #ID = ${id}`)){
+                    send(`/admin/news/${id}`).then(()=>{
+                    document.getElementById(id).remove();
+                    });
+                }else{
+                    alert("Вы отменили удаление записи");
+                }
+            });
+        });
+
+        async function send(url){
+            let response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            });
+            let result = await response.json();
+            return result.ok;
+        }
 
     </script>
 @endpush

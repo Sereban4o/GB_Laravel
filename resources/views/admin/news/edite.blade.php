@@ -7,6 +7,11 @@
 
         </div>
     </div>
+    @if($errors->any())
+        @foreach($errors->all() as $error)
+            <x-alert :message="$error" type="danger"></x-alert>
+        @endforeach
+    @endif
     @include('inc.message')
 
     <form method="post" action="{{ route('admin.news.update', $news) }}" enctype="multipart/form-data">
