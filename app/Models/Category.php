@@ -14,6 +14,7 @@ class Category extends Model
         'title',
         'description',
         'slug'
+
     ];
 
     public function news(): HasMany

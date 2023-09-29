@@ -46,9 +46,9 @@
         <div class="mb-3">
             <label for="status">Статус</label>
             <select class="form-control" name="status" id="status">
-                <option @selected(old('status') === 'draft')>draft</option>
-                <option @selected(old('status') === 'active')>active</option>
-                <option @selected(old('status') === 'blocked')>blocked</option>
+                @foreach(\App\Enums\News\Status::getEnums() as $statusEnums)
+                    <option @selected(old('status') === $statusEnums)>{{$statusEnums}}</option>
+                @endforeach
             </select>
         </div>
         <div class="input-group mb-3">

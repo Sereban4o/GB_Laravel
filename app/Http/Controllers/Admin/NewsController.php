@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\News\Status;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\News\Create;
-use App\Http\Requests\Admin\News\Edit;
+use App\Http\Requests\Admin\News\CreateRequest;
+use App\Http\Requests\Admin\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -45,20 +45,22 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Create $request)
+    public function store(CreateRequest $request)
     {
 
-       $url = null;
+
+
+        $data = $request->only(['category_id', 'title', 'author', 'status', 'description', 'image']);
+
+        $url = null;
         if ($request->file('image')) {
             $path = Storage::putFile('public/img', $request->file('image'));
             $url = Storage::url($path);
         }
-
-
-        $data = $request->only(['category_id', 'title', 'author', 'status', 'description']);
+        $data['image'] = $url;
 
         $news = new News($data);
-        $news->image = $url;
+
         if ($news->save()) {
             return redirect()->route('admin.news.index')->with('success', 'Запись успешно сохранена');
         }
@@ -89,19 +91,24 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Edit $request, News $news)
+    public function update(EditRequest $request, News $news)
     {
 
-         $url = null;
-        if ($request->file('image')) {
+
+        $data = $request->only(['category_id', 'title', 'author', 'status', 'description', 'image']);
+
+
+        if($request->file('image')) {
+        $request->validate([ 'image' => ['sometimes', 'image', 'mimes:jpg,jpeg,bmp,png']]);
+
             $path = Storage::putFile('public/img', $request->file('image'));
             $url = Storage::url($path);
-        }
+            $data['image']=$url;
+    }
 
-        $data = $request->only(['category_id', 'title', 'author', 'status', 'description']);
 
         $news->fill($data);
-        $news->image = $url;
+
         if ($news->save()) {
             return redirect()->route('admin.news.index')->with('success', 'Запись успешно изменена');
         }

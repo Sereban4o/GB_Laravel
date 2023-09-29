@@ -1,12 +1,13 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Categories\Create;
+use App\Http\Requests\Admin\Categories\CreateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Spatie\FlareClient\View;
 
 class CategoryController extends Controller
 {
@@ -30,7 +31,7 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Create $request)
+    public function store(CreateCategoryRequest $request)
     {
 
         $data = $request->only(['title', 'slug', 'description']);

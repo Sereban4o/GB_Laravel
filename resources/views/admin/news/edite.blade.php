@@ -13,7 +13,6 @@
         @endforeach
     @endif
     @include('inc.message')
-
     <form method="post" action="{{ route('admin.news.update', $news) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -38,43 +37,25 @@
                 @endforeach
             </select>
         </div>
-
-
         <div class="form-group">
             <label for="author">Автор</label>
             <input type="text" class="form-control" name="author" id="author"
                    value="{{ old('author') ?? $news->author }}">
         </div>
-
-
         <div class="form-group">
             <label for="status">Статус</label>
 
             <select class="form-control" name="status" id="status">
-                <option
-                    @if($news->status === \App\Enums\News\Status::DRAFT->value) selected @endif>
-                    {{ \App\Enums\News\Status::DRAFT->value }}
-                </option>
-                <option
-                    @if($news->status === \App\Enums\News\Status::ACTIVE->value) selected @endif>
-                    {{ \App\Enums\News\Status::ACTIVE->value }}
-                </option>
-                <option
-                    @if($news->status === \App\Enums\News\Status::BLOCKED->value) selected @endif>
-                    {{ \App\Enums\News\Status::BLOCKED->value }}
-                </option>
+                @foreach(\App\Enums\News\Status::getEnums() as $statusEnums)
+                    <option @selected($news->status === $statusEnums)>{{$statusEnums}}</option>
+                @endforeach
             </select>
-
         </div>
-
-
         <div class="form-group">
             <label for="image">Изображение</label>
             <img src="{{ $news->image }}" width="100">
             <input type="file" class="form-control" name="image" id="image">
         </div>
-
-
         <br>
         <button type="submit" class="btn btn-success">Обновить</button>
     </form>

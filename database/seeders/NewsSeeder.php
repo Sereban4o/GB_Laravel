@@ -15,25 +15,25 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
-        $news = new News($this->getData());
-        $news->save();
+        DB::table('news')->insert($this->getData());
     }
 
-    private function getData(): array
+    public function getData(): array
     {
-        $quantity = 30;
+        $quantityNews = 20;
         $news = [];
-        for ($i=0; $i <$quantity; $i++){
-            $news[]=[
-                'category_id'=>fake()->randomNumber(1, 10),
-                'author'=>fake()->userName,
-                'image'=>fake()->imageUrl(200, 150),
-                'status'=>Status::ACTIVE->value,
-                'title'=> fake()->jobTitle(),
-                'description'=>fake()->text(200),
-                'created_at'=>now(),
+        for ($i=0; $i < $quantityNews; $i++) {
+            $news[] = [
+                'category_id' => fake()->numberBetween(1,3),
+                'title' => fake()->jobTitle(),
+                'author' => fake()->userName(),
+                'image'  => fake()->imageUrl(200, 150),
+                'status' => fake()->randomElement(Status::getEnums()),
+                'description' => fake()->text(100) ,
+                'created_at' => now(),
             ];
         }
+
         return $news;
     }
 }
