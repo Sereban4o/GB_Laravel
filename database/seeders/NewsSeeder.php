@@ -15,10 +15,10 @@ class NewsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('news')->insert($this->getData());
+       // DB::table('news')->insert($this->getData());
     }
 
-    public function getData(): array
+  /*  public function getData(): array
     {
         $quantityNews = 20;
         $news = [];
@@ -35,5 +35,5 @@ class NewsSeeder extends Seeder
         }
 
         return $news;
-    }
+    }*/
 }
