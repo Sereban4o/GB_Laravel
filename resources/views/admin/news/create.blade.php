@@ -58,3 +58,17 @@
         <button type="submit" class="btn btn-success">Сохранить</button>
     </form>
 @endsection
+@push('js')
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ),{
+                ckfinder: {
+                    uploadUrl: '{{route('admin.image.upload').'?_token='.csrf_token()}}',
+                }
+            })
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+
+@endpush

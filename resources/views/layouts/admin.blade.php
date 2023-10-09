@@ -90,6 +90,8 @@
     <link href="{{asset('assets/css/bootstrap-icons.css')}}" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="{{asset('assets/css/dashboard.css')}}" rel="stylesheet">
+   {{-- <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>--}}
+   <script src="{{asset('assets/vendor/ckeditor5/build/ckeditor.js')}}"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
