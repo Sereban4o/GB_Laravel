@@ -4,7 +4,7 @@
         <h1 class="h2">Список пользователей</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group me-2">
-                <a href="{{route('admin.users.create')}}" class="btn btn-sm btn-outline-secondary">Добавить</a>
+                <a href="#" class="btn btn-sm btn-outline-secondary">Добавить</a>
             </div>
 
         </div>
@@ -23,6 +23,7 @@
                 <th scope="col">Имя</th>
                 <th scope="col">Почта</th>
                 <th scope="col">Действия</th>
+                <th scope="col">Назначить/Снять</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,13 @@
                     <td>{{$user->name}}</td>
                     <td>{{$user->email}}</td>
                     <td><a href="{{ route('admin.users.edit', $user) }}">Ред.</a> |  <a href="">Уд.</a></td>
+                    <td class="d-flex justify-content-end">
+                        @if ($user->is_admin)
+                            <a href="{{route('admin.users.toggleAdmin', $user)}}" type="button" class="btn btn-danger">Снять админа</a>
+                        @else
+                            <a href="{{route('admin.users.toggleAdmin', $user)}}" type="button" class="btn btn-success">Назначить админа</a>
+                        @endif
+                    </td>
                 </tr>
              @endif
             @empty

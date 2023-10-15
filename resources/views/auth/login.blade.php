@@ -63,7 +63,11 @@
                                     </a>
                                 @endif
                             </div>
-                        </div>
+                            <div style="display: flex; justify-content: center; gap: 10px">
+                            <a href="{{route('social-providers.redirect', 'vkontakte')}}" ><img src="{{asset('assets/images/VK_Logo.png')}}" width="50" alt=""> </a>
+                            <a href="{{route('social-providers.redirect', 'github')}}"><img src="{{asset('assets/images/GitHub_Logo.png')}}" width="50" alt=""> </a>
+                            </div>
+                            </div>
                     </form>
                 </div>
             </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Users\EditUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -18,8 +19,8 @@ class UserController extends Controller
      */
     public function index(): View
     {
-        $users = User::all();
-        return view('admin.users.index')->with(['users' => $users]);
+        $users = User::query()->where('id', '!=', Auth::id())->get();
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -91,5 +92,15 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function toggleAdmin(User $user){
+        if ($user->id !=Auth::id()){
+            $user->is_admin = !$user->is_admin;
+            $user->save();
+
+            return redirect()->route('admin.users.index')->with('success', 'Права изменены');
+        }
+        return redirect()->route('admin.users.index')->with('error', 'Нельзя снять админа с себя');
     }
 }
