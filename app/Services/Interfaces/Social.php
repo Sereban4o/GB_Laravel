@@ -8,5 +8,5 @@ use Laravel\Socialite\Contracts\User as SocialUser;
 
 interface Social
 {
-public function findOrCreateUser(SocialUser $socialUser):User;
+public function findOrCreateUser(SocialUser $socialUser): User;
 }

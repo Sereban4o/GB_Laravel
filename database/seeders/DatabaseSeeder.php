@@ -14,9 +14,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
+<<<<<<< Updated upstream
+        $this->call([
+           CategorySeeder::class,
+            NewsSeeder::class,
+=======
        $this->call([
-           /* CategorySeeder::class,
-            NewsSeeder::class,*/
+           ResourceSeeder::class
+>>>>>>> Stashed changes
         ]);
 
         \App\Models\User::factory(2)->create();

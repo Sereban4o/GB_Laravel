@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\News\CreateRequest;
 use App\Http\Requests\Admin\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
+use App\Services\Interfaces\UploadImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -45,7 +46,7 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateRequest $request)
+    public function store(CreateRequest $request, UploadImage $uploadImage)
     {
 
 
@@ -54,8 +55,7 @@ class NewsController extends Controller
 
         $url = null;
         if ($request->file('image')) {
-            $path = Storage::putFile('public/img', $request->file('image'));
-            $url = Storage::url($path);
+            $url = $uploadImage->uploadImage($request, 'image');
         }
         $data['image'] = $url;
 
@@ -91,21 +91,17 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(EditRequest $request, News $news)
+    public function update(EditRequest $request, News $news, UploadImage $uploadImage)
     {
 
 
         $data = $request->only(['category_id', 'title', 'author', 'status', 'description', 'image']);
 
-
+        $url=null;
         if($request->file('image')) {
-        $request->validate([ 'image' => ['sometimes', 'image', 'mimes:jpg,jpeg,bmp,png']]);
-
-            $path = Storage::putFile('public/img', $request->file('image'));
-            $url = Storage::url($path);
-            $data['image']=$url;
+        $url = $uploadImage->uploadImage($request, 'image');
     }
-
+        $data['image']=$url;
 
         $news->fill($data);
 
@@ -129,4 +125,19 @@ class NewsController extends Controller
             return response()->json('error', 400);
         }
     }
+
+    public function storeImage(Request $request, UploadImage $uploadImage)
+    {
+
+       if($request->file('upload')) {
+
+            $url = $uploadImage->uploadImage($request, 'upload');
+            return response()->json(['fileName' => $request->file('upload'), 'uploaded'=> 1, 'url' => $url]);
+        }
+
+        abort(404);
+    }
+
+
+
 }
